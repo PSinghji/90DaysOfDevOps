@@ -15,9 +15,29 @@ Imagine you're managing a **Linux-based production server** and need to ensure t
 - Learn about Linux **users, groups, and permissions** (`/etc/passwd`, `/etc/group`).
 - **Task:**  
   - Create a user `devops_user` and add them to a group `devops_team`.
+      # first we create devops_team group
+        sudo groupadd devops_team
+      # now, create user and assign devops_team group to that user from below command:
+        sudo useradd -m -G devops_team devops_user
   - Set a password and grant **sudo** access.
+     # to set the password of a user below command is usable :
+        sudo passwd devops_user
+        # After run above command it will ask for enter new password and re-enter for confirmation.
+    # to grant sudo access for this user , we need to assign devops_user to sudo group.so we need to modify the group of that user
+        sudo usermod -aG sudo devops_user
+    # to verify the sudo access , swith user to that user and do sudo whoami, if output provide root than root access has been granted
+       su - devops_user
+       sudo whoami 
+       
   - Restrict SSH login for certain users in `/etc/ssh/sshd_config`.
+      # To Denyspecific user use below command :
+         DenyUsers devops_user
 
+      # To allow user :
+         AllowUsers devops_user
+      # Note : restart the ssh services by
+        sudo systemctl restart sshd
+    
 ---
 
 ### **2️⃣ File & Directory Permissions**
